@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PRISM | Responsive Investigation Workbench</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "secondary": "#06b6d4",
+                        "danger": "#ef4444",
+                        "success": "#10b981",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#050b14",
+                        "charcoal": "#0a0f18",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(19, 127, 236, 0.4), 0 0 20px rgba(19, 127, 236, 0.2)",
+                        "neon-red": "0 0 10px rgba(239, 68, 68, 0.4), 0 0 20px rgba(239, 68, 68, 0.2)",
+                    }
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --border-light: rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-light);
+        }
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .timeline-grid {
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 12.5% 100%;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+        @media (max-width: 768px) {
+            .mobile-accordion-open .accordion-content {
+                display: block;
+            }
+            .mobile-accordion-closed .accordion-content {
+                display: none;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-slate-300 antialiased h-screen flex flex-col md:flex-row overflow-hidden">
+<nav class="order-last md:order-first w-full md:w-16 h-16 md:h-full border-t md:border-t-0 md:border-r border-white/10 bg-charcoal flex md:flex-col items-center justify-around md:justify-start py-0 md:py-6 z-50 shrink-0">
+<div class="hidden md:block mb-8 text-primary">
+<span class="material-symbols-outlined text-3xl">hub</span>
+</div>
+<div class="flex md:flex-col gap-6 items-center">
+<button class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center shadow-neon">
+<span class="material-symbols-outlined">explore</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-white/5 text-slate-500 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">database</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-white/5 text-slate-500 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-analytics">analytics</span>
+</button>
+<button class="w-10 h-10 rounded-lg hover:bg-white/5 text-slate-500 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">rule</span>
+</button>
+</div>
+<div class="mt-auto hidden md:flex flex-col gap-6">
+<button class="w-10 h-10 rounded-lg hover:bg-white/5 text-slate-500 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-bold text-[10px]">JS</div>
+</div>
+</nav>
+<main class="flex-1 flex flex-col overflow-hidden h-[calc(100vh-64px)] md:h-screen">
+<header class="h-14 border-b border-white/10 bg-charcoal/80 backdrop-blur-md flex items-center justify-between px-4 md:px-6 z-40 shrink-0">
+<div class="flex items-center gap-3 md:gap-6 overflow-hidden">
+<div class="min-w-0">
+<h1 class="text-[10px] md:text-sm font-bold tracking-widest text-white uppercase truncate">Investigation Workbench</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="text-[9px] uppercase text-slate-500 tracking-widest font-mono hidden sm:inline">ID:</span>
+<span class="text-[9px] font-mono text-primary truncate">NET-8842-AX</span>
+</div>
+</div>
+<div class="hidden sm:block h-8 w-px bg-white/10"></div>
+<div class="hidden lg:flex items-center gap-4">
+<div class="px-2 py-0.5 bg-red-500/10 border border-red-500/20 rounded text-[9px] font-mono text-red-400 flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                        LIVE
+                    </div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 md:px-3 md:py-1.5 bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded text-[10px] md:text-xs font-medium text-primary">
+<span class="md:hidden material-symbols-outlined text-sm">download</span>
+<span class="hidden md:inline">Export</span>
+</button>
+<button class="p-1.5 md:px-3 md:py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded text-[10px] md:text-xs font-medium text-white">
+<span class="md:hidden material-symbols-outlined text-sm">share</span>
+<span class="hidden md:inline">Share</span>
+</button>
+</div>
+</header>
+<div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+<section class="flex-1 md:flex-[0.6] lg:flex-[0.65] relative bg-background-dark border-b md:border-b-0 md:border-r border-white/10 overflow-hidden min-h-[300px]">
+<div class="absolute inset-0 grid-bg opacity-30"></div>
+<div class="absolute top-4 left-4 z-30 flex flex-col gap-2">
+<div class="glass-panel p-1 rounded-lg flex flex-col gap-1">
+<button class="p-2 bg-primary/20 text-primary rounded"><span class="material-symbols-outlined text-lg">near_me</span></button>
+<button class="p-2 text-slate-400 hover:text-white"><span class="material-symbols-outlined text-lg">zoom_in</span></button>
+</div>
+<button class="md:hidden glass-panel p-2 rounded-lg text-slate-400" title="Full Screen">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+</div>
+<div class="absolute top-4 right-4 z-30">
+<div class="glass-panel px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-red-500 shadow-neon-red"></span>
+<span class="text-[10px] font-mono text-white">12 ANOMALIES</span>
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<svg class="w-full h-full opacity-40">
+<line stroke="#137fec" stroke-width="1" x1="50%" x2="35%" y1="50%" y2="40%"></line>
+<line stroke="#137fec" stroke-width="1" x1="50%" x2="65%" y1="50%" y2="45%"></line>
+<circle class="animate-pulse" cx="50%" cy="50%" fill="#137fec" r="4"></circle>
+<circle cx="35%" cy="40%" fill="#06b6d4" r="3"></circle>
+<circle cx="65%" cy="45%" fill="#ef4444" r="3"></circle>
+</svg>
+<div class="absolute text-center">
+<div class="w-16 h-16 rounded-full border-2 border-primary shadow-neon glass-panel flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-2xl">shield</span>
+</div>
+<span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Main Node</span>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 md:hidden flex justify-between items-end pointer-events-none">
+<div class="glass-panel p-2 rounded text-[9px] font-mono pointer-events-auto">
+<span class="text-secondary">SCANNING...</span> 84%
+                    </div>
+</div>
+</section>
+<section class="flex-1 md:flex-[0.4] lg:flex-[0.35] flex flex-col bg-charcoal/30 overflow-y-auto md:overflow-hidden">
+<div class="hidden md:flex h-10 px-4 border-b border-white/10 items-center justify-between bg-black/40 shrink-0">
+<h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary">analytics</span>
+                        Evidence Intelligence
+                    </h3>
+</div>
+<div class="flex-1 flex flex-col overflow-y-auto md:overflow-y-auto custom-scrollbar">
+<div class="border-b border-white/5 md:border-none">
+<button class="w-full px-4 py-4 md:py-5 flex items-center justify-between md:cursor-default text-left group">
+<div>
+<span class="text-[9px] font-mono text-danger uppercase block mb-1">Threat Score: 98.2</span>
+<h4 class="text-white font-bold text-sm md:text-base">Suspicious Entity Alpha</h4>
+</div>
+<span class="md:hidden material-symbols-outlined text-slate-500">expand_more</span>
+</button>
+<div class="px-4 pb-4 space-y-4">
+<div class="p-3 bg-white/5 border border-white/10 rounded-lg">
+<p class="text-xs text-slate-400 leading-relaxed">
+                                    Entity exhibits behavior consistent with <span class="text-secondary">automated extraction</span> patterns. Multiple high-frequency connections detected in restricted clusters.
+                                </p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2 bg-black/20 border border-white/5 rounded">
+<div class="text-[8px] uppercase text-slate-500 font-mono">First Seen</div>
+<div class="text-[10px] text-white">2023-11-24</div>
+</div>
+<div class="p-2 bg-black/20 border border-white/5 rounded">
+<div class="text-[8px] uppercase text-slate-500 font-mono">Source</div>
+<div class="text-[10px] text-white">AWS-West-2</div>
+</div>
+</div>
+</div>
+</div>
+<div class="border-b border-white/5">
+<button class="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+<h5 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">schedule</span>
+                                Activity Timeline
+                            </h5>
+<span class="material-symbols-outlined text-xs text-slate-600">open_in_full</span>
+</button>
+<div class="px-4 py-2 bg-black/10">
+<div class="relative py-4 border-l border-white/10 ml-2 space-y-6">
+<div class="relative pl-6">
+<div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-danger shadow-neon-red"></div>
+<div class="text-[10px] font-mono text-danger">08:14:22</div>
+<div class="text-xs text-slate-300">Unauthorized Port Scan Detected</div>
+</div>
+<div class="relative pl-6">
+<div class="absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full bg-secondary"></div>
+<div class="text-[10px] font-mono text-secondary">08:12:05</div>
+<div class="text-xs text-slate-300">Inbound Handshake (IP: 192.x.x.x)</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<button class="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+<h5 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">folder_open</span>
+                                Files &amp; Artifacts
+                            </h5>
+<span class="material-symbols-outlined text-xs text-slate-600">expand_more</span>
+</button>
+<div class="px-4 pb-6 space-y-2 mt-2">
+<div class="flex items-center justify-between p-2.5 rounded bg-black/40 border border-white/5 hover:border-primary/40 transition-all cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-500">description</span>
+<span class="text-xs text-slate-300">payload_dump.log</span>
+</div>
+<span class="text-[10px] text-slate-600 font-mono">14KB</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded bg-black/40 border border-white/5 hover:border-primary/40 transition-all cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-500">image</span>
+<span class="text-xs text-slate-300">network_snapshot.png</span>
+</div>
+<span class="text-[10px] text-slate-600 font-mono">2.4MB</span>
+</div>
+</div>
+</div>
+<div class="mt-auto p-4 border-t border-white/10 bg-black/20">
+<button class="w-full py-3 bg-danger/80 hover:bg-danger text-white rounded font-bold text-xs shadow-neon-red transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">lock</span>
+                            Quarantine Node
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/5 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-secondary/5 blur-[150px]"></div>
+</div>
+
+</body></html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Final Evidence Brief - PRISM Mobile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0c10",
+                        "surface-dark": "#121826",
+                        "surface-dark-2": "#1a2235",
+                        "gold": "#D4AF37",
+                        "danger": "#ef4444",
+                        "success": "#22c55e",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-dark text-slate-300 antialiased font-sans;
+            }
+        }
+        .document-canvas {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }@media (max-width: 640px) {
+            .fluid-h1 {
+                font-size: clamp(2.5rem, 10vw, 3.5rem);
+            }
+            .fluid-p {
+                font-size: clamp(0.95rem, 4vw, 1.1rem);
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="selection:bg-primary/30 min-h-screen overflow-x-hidden pb-32">
+<nav class="sticky top-0 z-[60] bg-background-dark/90 backdrop-blur-xl border-b border-slate-800 px-4 md:px-8 py-3 md:py-4 flex items-center justify-between">
+<div class="flex items-center gap-3 md:gap-6">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 md:w-8 md:h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg md:text-xl">account_tree</span>
+</div>
+<span class="font-display font-bold text-lg md:text-xl tracking-tight text-white uppercase">Prism</span>
+</div>
+<div class="hidden sm:block h-6 w-px bg-slate-800"></div>
+<div class="hidden sm:flex flex-col">
+<span class="text-[9px] uppercase tracking-[0.2em] text-slate-500 font-bold">Document Status</span>
+<span class="text-xs font-medium text-slate-300">Final Evidence Brief Review</span>
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<button class="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-2 text-xs font-medium text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">history_edu</span>
+<span class="hidden xs:inline">Audit</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400 text-sm">person</span>
+</div>
+</div>
+</nav>
+<main class="document-canvas px-5 md:px-8 py-8 md:py-10 relative">
+<div class="flex flex-col gap-10 md:grid md:grid-cols-12 md:gap-10">
+<div class="md:col-span-7 space-y-10 md:space-y-12">
+<header class="border-b border-slate-800 pb-8 md:pb-10">
+<div class="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
+<div>
+<span class="text-primary font-bold text-[10px] md:text-xs uppercase tracking-[0.3em] mb-2 md:mb-3 block">Confidential Report</span>
+<h1 class="fluid-h1 font-display font-bold text-white mb-3 italic leading-none">#PRISM-8291-B</h1>
+<p class="fluid-p text-slate-400 max-w-md leading-relaxed">System-generated forensic analysis of suspected sub-affiliate arbitrage networks.</p>
+</div>
+<div class="flex flex-col items-start md:items-end gap-2 w-full md:w-auto">
+<div class="flex items-center gap-3 bg-gold/5 border border-gold/20 px-4 py-3 rounded-xl w-full md:w-auto">
+<span class="material-symbols-outlined text-gold" style="font-size: 28px;">verified</span>
+<div class="flex flex-col">
+<span class="text-[9px] font-bold text-gold uppercase tracking-widest">Confidence Tier</span>
+<span class="text-lg md:text-xl font-display font-bold text-gold italic leading-none">High-Alpha</span>
+</div>
+</div>
+<span class="text-[9px] text-slate-500 font-mono">HASH: 7a92b...e4f1</span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+<div>
+<p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest mb-1">Lead Analyst</p>
+<p class="font-display text-lg md:text-xl text-white">Jonathan Doe</p>
+</div>
+<div>
+<p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest mb-1">Incident Date</p>
+<p class="font-display text-lg md:text-xl text-white">Oct 24, 2023</p>
+</div>
+<div class="col-span-2 md:col-span-1 border-t md:border-t-0 border-slate-800 pt-4 md:pt-0">
+<p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest mb-1">Exposure</p>
+<p class="font-display text-2xl md:text-xl text-danger font-bold">$1,450,291.00</p>
+</div>
+</div>
+</header>
+<section>
+<div class="flex items-center gap-4 mb-6">
+<span class="h-px flex-1 bg-slate-800"></span>
+<h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em] whitespace-nowrap">Section 01 / Hypothesis</h3>
+<span class="h-px flex-1 bg-slate-800"></span>
+</div>
+<div class="relative bg-surface-dark p-6 md:p-8 rounded-2xl border border-slate-800 group transition-all">
+<div class="absolute -top-3 left-6 md:left-8 px-2 bg-background-dark">
+<span class="material-symbols-outlined text-primary">format_quote</span>
+</div>
+<p class="font-display text-2xl md:text-3xl font-medium leading-relaxed italic text-white">
+                            "Suspected orchestrated commission arbitrage via <span class="text-primary not-italic">mirror trading</span> and <span class="text-primary not-italic">synchronized activity</span>."
+                        </p>
+</div>
+</section>
+<section>
+<div class="flex items-center gap-4 mb-6">
+<span class="h-px flex-1 bg-slate-800"></span>
+<h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em] whitespace-nowrap">Section 02 / Evidence</h3>
+<span class="h-px flex-1 bg-slate-800"></span>
+</div>
+<div class="space-y-6">
+<div class="prose prose-invert prose-slate max-w-none">
+<p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                                Traffic flow correlation (ρ=0.94) between primary clusters indicates a high probability of automated execution across high-latency endpoints.
+                            </p>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<div class="group flex items-center justify-between p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+<div class="flex items-center gap-3 md:gap-4">
+<div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center font-display font-bold text-slate-300 shrink-0">AV</div>
+<div class="min-w-0">
+<p class="font-bold text-white text-sm truncate">Alpha Ventures Ltd.</p>
+<p class="text-[10px] text-slate-500">ID: 992-102 • BVI</p>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<div class="text-right">
+<p class="text-danger font-bold text-lg leading-none">98</p>
+<p class="text-[9px] text-slate-500 uppercase">Risk</p>
+</div>
+</div>
+</div>
+<div class="group flex items-center justify-between p-4 rounded-xl bg-slate-900/50 border border-slate-800">
+<div class="flex items-center gap-3 md:gap-4">
+<div class="w-10 h-10 rounded bg-slate-800 flex items-center justify-center font-display font-bold text-slate-300 shrink-0">BH</div>
+<div class="min-w-0">
+<p class="font-bold text-white text-sm truncate">Beta Holdings</p>
+<p class="text-[10px] text-slate-500">ID: 441-291 • CYP</p>
+</div>
+</div>
+<div class="flex items-center gap-4 shrink-0">
+<div class="text-right">
+<p class="text-danger font-bold text-lg leading-none">92</p>
+<p class="text-[9px] text-slate-500 uppercase">Risk</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-5 md:p-6 rounded-2xl bg-danger/5 border border-danger/20 flex flex-col xs:flex-row gap-4 items-start">
+<div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-danger/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-danger">gavel</span>
+</div>
+<div>
+<h4 class="font-display text-lg md:text-xl font-bold text-danger mb-1 italic">Protocol Recommendation</h4>
+<p class="text-xs md:text-sm text-slate-400 mb-4 leading-relaxed">Immediate suspension of Payout #7719 and #7720 pending final forensic audit.</p>
+<div class="inline-flex items-center gap-2 bg-danger text-white text-[9px] font-bold px-3 py-1.5 rounded uppercase tracking-[0.2em]">
+<span class="material-symbols-outlined text-sm">block</span>
+                                    Payout Freeze
+                                </div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="md:col-span-5 relative">
+<div class="md:sticky md:top-28 space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em]">Visual Artifacts</h3>
+<span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 font-mono text-[9px]">2 FILES</span>
+</div>
+<div class="bg-surface-dark border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+<div class="p-3 md:p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg">hub</span>
+<h4 class="font-sans text-[10px] font-bold text-slate-300 uppercase tracking-widest">Coordination Map</h4>
+</div>
+<span class="material-symbols-outlined text-slate-600 text-lg">fullscreen</span>
+</div>
+<div class="aspect-video w-full bg-[#0d1117] relative flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, #135bec 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="relative w-48 h-48">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full shadow-[0_0_30px_rgba(19,91,236,0.6)] z-20 flex items-center justify-center">
+<div class="w-2 h-2 bg-white rounded-full"></div>
+</div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 256 256">
+<defs>
+<linearGradient id="grad1-m" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(19, 91, 236, 0.8)"></stop>
+<stop offset="100%" style="stop-color:rgba(19, 91, 236, 0.1)"></stop>
+</linearGradient>
+</defs>
+<line stroke="url(#grad1-m)" stroke-width="2" x1="128" x2="60" y1="128" y2="60"></line>
+<line stroke="url(#grad1-m)" stroke-width="2" x1="128" x2="200" y1="128" y2="180"></line>
+<line stroke="url(#grad1-m)" stroke-width="2" x1="128" x2="190" y1="128" y2="70"></line>
+<line stroke="url(#grad1-m)" stroke-width="2" x1="128" x2="70" y1="128" y2="190"></line>
+</svg>
+<div class="absolute top-[60px] left-[60px] w-3 h-3 bg-danger rounded-full shadow-[0_0_10px_rgba(239,68,68,0.4)]"></div>
+<div class="absolute bottom-[76px] right-[56px] w-3 h-3 bg-danger rounded-full shadow-[0_0_10px_rgba(239,68,68,0.4)]"></div>
+</div>
+</div>
+<div class="p-3 bg-slate-900/40">
+<p class="text-[9px] text-slate-500 font-mono italic uppercase tracking-tighter">'Proxy-Exit-Nodes-v4' with 97% cluster density.</p>
+</div>
+</div>
+<div class="bg-surface-dark border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+<div class="p-3 md:p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg">timeline</span>
+<h4 class="font-sans text-[10px] font-bold text-slate-300 uppercase tracking-widest">Temporal Sync</h4>
+</div>
+<span class="material-symbols-outlined text-slate-600 text-lg">download</span>
+</div>
+<div class="aspect-[21/9] w-full bg-[#0d1117] px-4 py-6 flex items-end justify-between gap-1">
+<div class="w-full bg-slate-800 h-[10%] rounded-sm"></div>
+<div class="w-full bg-slate-800 h-[15%] rounded-sm"></div>
+<div class="w-full bg-primary/40 h-[25%] rounded-sm"></div>
+<div class="w-full bg-primary h-[95%] rounded-sm shadow-[0_0_15px_rgba(19,91,236,0.3)]"></div>
+<div class="w-full bg-primary h-[100%] rounded-sm shadow-[0_0_15px_rgba(19,91,236,0.4)]"></div>
+<div class="w-full bg-primary h-[85%] rounded-sm shadow-[0_0_15px_rgba(19,91,236,0.2)]"></div>
+<div class="w-full bg-primary/60 h-[40%] rounded-sm"></div>
+<div class="w-full bg-slate-800 h-[12%] rounded-sm"></div>
+</div>
+<div class="flex justify-between px-4 pb-3">
+<span class="text-[8px] text-slate-600 font-mono">00:00 UTC</span>
+<span class="text-[8px] text-primary font-mono font-bold">14:24 SPIKE</span>
+<span class="text-[8px] text-slate-600 font-mono">23:59 UTC</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 z-[70] p-4 md:p-10 md:static md:flex md:justify-end bg-background-dark/80 backdrop-blur-xl border-t border-slate-800 md:border-none md:bg-transparent">
+<div class="max-w-md mx-auto md:mr-0 md:ml-auto bg-surface-dark-2 border border-slate-700 p-1.5 rounded-2xl shadow-2xl flex items-center gap-1.5">
+<button class="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-danger hover:bg-danger/90 text-white rounded-xl transition-all shadow-lg shadow-danger/20 font-bold">
+<span class="material-symbols-outlined text-xl">block</span>
+<span class="uppercase tracking-widest text-[10px]">Deny</span>
+</button>
+<button class="flex-1 flex items-center justify-center gap-2 px-4 py-4 bg-success hover:bg-success/90 text-white rounded-xl transition-all shadow-lg shadow-success/20 font-bold">
+<span class="material-symbols-outlined text-xl">check_circle</span>
+<span class="uppercase tracking-widest text-[10px]">Approve</span>
+</button>
+<div class="w-px h-8 bg-slate-700 mx-1"></div>
+<button class="p-4 text-slate-400 hover:text-white rounded-xl">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<div class="hidden md:block fixed top-24 left-8 pointer-events-none opacity-20">
+<div class="w-12 h-px bg-slate-500 mb-2"></div>
+<div class="h-12 w-px bg-slate-500"></div>
+</div>
+<div class="hidden md:block fixed bottom-24 left-8 pointer-events-none opacity-20 transform rotate-180">
+<div class="w-12 h-px bg-slate-500 mb-2"></div>
+<div class="h-12 w-px bg-slate-500"></div>
+</div>
+
+</body></html>

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+data/*.csv
+test_output.txt
+.pytest_cache/
+.streamlit/
+!src/dashboard/.streamlit/config.toml
