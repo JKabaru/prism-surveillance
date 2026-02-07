@@ -3,7 +3,8 @@ numpy
 faker
 networkx
 plotly
-streamlit
+streamlit>=1.35.0
+altair<5
 pytest
 openrouter
 requests
