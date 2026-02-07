@@ -508,9 +508,7 @@ elif page == "Command Center":
                         <div style="font-size: 0.6rem; font-weight: 700; color: #475569; text-transform: uppercase;">Confidence</div>
                     </div>
                 </div>
-                
                 <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6; margin-bottom: 20px;">{evidence['hypothesis']}</p>
-                
                 <div style="background: rgba(0, 242, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                         <span class="material-symbols-outlined" style="color: var(--prism-cyan); font-size: 16px;">robot_2</span>
@@ -523,7 +521,6 @@ elif page == "Command Center":
                         <div style="display: flex; align-items: center; gap: 4px;"><span style="color: var(--prism-violet);">○</span> Action: <b>{evidence['agent_decision']['selected_action']}</b></div>
                     </div>
                 </div>
-
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05);">
                     <div style="display: flex; gap: 16px;">
                         <div>
