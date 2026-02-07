@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 import plotly.graph_objects as go
+import sys
+import os
+
+# Robust path resolution for Streamlit Cloud
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
 from src.engine.correlation_engine import PRISMCorrelationEngine
 from src.engine.network_mapper import PRISMNetworkMapper
 from src.engine.synthesizer import PRISMEvidenceSynthesizer
