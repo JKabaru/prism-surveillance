@@ -139,6 +139,8 @@ if 'partners_df' in st.session_state and st.session_state.partners_df is not Non
     reporter = PRISMReporter()
     regime_monitor = PRISMRegimeMonitor()
     loader = PRISMDataLoader()
+    # Dynamic LLM Client creation with secure key resolution
+    client = PRISMLLMClient(st.session_state.get('llm_settings', {}).get('provider', 'OpenRouter'), get_active_api_key())
 else:
     engine = PRISMCorrelationEngine(time_window_seconds=1.0)
     mapper = PRISMNetworkMapper(None, None, None)
@@ -147,6 +149,7 @@ else:
     reporter = PRISMReporter()
     regime_monitor = PRISMRegimeMonitor()
     loader = PRISMDataLoader()
+    client = PRISMLLMClient('OpenRouter', get_active_api_key())
 
 
 if 'app_state' not in st.session_state:
@@ -160,18 +163,25 @@ if 'partners_df' not in st.session_state:
     st.session_state.trades_df = None
     st.session_state.col_mapping = {"Partners": {}, "Sub-Affiliates": {}, "Clients": {}, "Trades": {}}
     
-# Initialize LLM Secrets (Hybrid Support)
+# Initialize LLM Secrets (Hybrid Support - Secure Masking)
 if 'api_key_type' not in st.session_state:
     if "OPENROUTER_API_KEY" in st.secrets:
         st.session_state.api_key_type = "System Default"
-        st.session_state.api_key = st.secrets["OPENROUTER_API_KEY"]
         st.session_state.llm_verified = True
         st.session_state.llm_ready = True
     else:
         st.session_state.api_key_type = "Personal Key"
-        st.session_state.api_key = ""
         st.session_state.llm_verified = False
         st.session_state.llm_ready = False
+
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = ""
+
+def get_active_api_key():
+    """Returns the API key based on current mode, ensuring secrets aren't exposed in session_state."""
+    if st.session_state.get('api_key_type') == "System Default":
+        return st.secrets.get("OPENROUTER_API_KEY", "")
+    return st.session_state.get('api_key', "")
 
 def load_data_state(p, s, c, t):
     st.session_state.partners_df = p
@@ -423,6 +433,15 @@ if page == "Settings":
     st.title("⚙️ AI & Agentic Settings")
     st.subheader("LLM Provider Configuration")
     
+    col_l1, col_l2 = st.columns(2)
+    provider = col_l1.selectbox("Provider", ["OpenRouter", "DeepSeek", "OpenAI", "Gemini", "Claude"], index=0)
+    
+    # Dynamic Model Fetching (Secure)
+    client = PRISMLLMClient(provider, get_active_api_key())
+    models = client.get_models()
+    model_ids = [m['id'] for m in models]
+    selected_model = col_l2.selectbox("Model selection", model_ids, index=0 if model_ids else None)
+    
     # Key Mode Selection
     system_key_available = "OPENROUTER_API_KEY" in st.secrets
     key_mode_options = ["System Default", "Personal Key"] if system_key_available else ["Personal Key"]
@@ -433,41 +452,38 @@ if page == "Settings":
     
     if key_mode == "System Default":
         st.session_state.api_key_type = "System Default"
-        st.session_state.api_key = st.secrets["OPENROUTER_API_KEY"]
-        st.info("✅ Using pre-configured System Key. You can proceed without manual entry.")
+        # DO NOT store secret in session state
+        st.info("✅ Using pre-configured System Key. Your key is secure and not visible in the environment.")
         st.session_state.llm_verified = True
+        api_key_to_save = "" 
     else:
         st.session_state.api_key_type = "Personal Key"
         api_key_placeholder = "••••••••••••••••" if st.session_state.get('api_key') and st.session_state.api_key_type == "Personal Key" else "Enter Personal API Key"
         current_val = st.session_state.get('api_key', "") if st.session_state.api_key_type == "Personal Key" else ""
         
-        api_key = st.text_input("Personal API Key", type="password", value=current_val, placeholder=api_key_placeholder)
+        personal_key = st.text_input("Personal API Key", type="password", value=current_val, placeholder=api_key_placeholder)
         
         # Connection Lock
         if 'llm_verified' not in st.session_state: st.session_state.llm_verified = False
 
         col_btn1, col_btn2 = st.columns([1, 2])
         if col_btn1.button("Test Personal Connection"):
-            temp_client = PRISMLLMClient(provider, api_key)
+            temp_client = PRISMLLMClient(provider, personal_key)
             with st.spinner("Verifying credentials..."):
                 if temp_client.test_connection():
                     st.success(f"Connected to {provider} successfully!")
                     st.session_state.llm_verified = True
-                    st.session_state.api_key = api_key
+                    st.session_state.api_key = personal_key
                 else:
                     st.error(f"Failed to connect to {provider}. Please check your API key.")
                     st.session_state.llm_verified = False
-        
-        save_val = api_key if key_mode == "Personal Key" else st.secrets["OPENROUTER_API_KEY"]
-    
-    # Final validation for save
-    active_key = st.session_state.api_key if key_mode == "System Default" else api_key
+        api_key_to_save = personal_key
 
     save_disabled = not st.session_state.llm_verified
     if st.button("Save & Proceed", disabled=save_disabled, use_container_width=True):
-        st.session_state.api_key = active_key
+        st.session_state.api_key = api_key_to_save if st.session_state.api_key_type == "Personal Key" else ""
         st.session_state.llm_settings = {"provider": provider, "model": selected_model}
-        st.session_state.llm_ready = True # For easier checking
+        st.session_state.llm_ready = True 
         
         # Auto-flow: If data is not yet loaded, guide user to Data Hub
         if st.session_state.trades_df is None:
