@@ -193,9 +193,9 @@ def load_data_state(p, s, c, t):
         mapper.partners_df = p
         mapper.subs_df = s
         mapper.clients_df = c
-    # Trigger auto-focus on Overview
-    st.session_state.active_intake_tab = "📊 Data Overview"
-    st.toast("🚀 Data initialized! Visualizing distribution...", icon="✅")
+    # Trigger auto-focus on Settings (Phase 2)
+    st.session_state.page_transition = "Agentic Settings"
+    st.toast("🚀 Data initialized! Proceeding to AI configuration...", icon="✅")
 
 # Sidebar Header Branding
 st.sidebar.markdown("""
@@ -479,18 +479,6 @@ if page == "Settings":
         api_key_to_save = personal_key
 
     save_disabled = not st.session_state.llm_verified
-    if st.button("Save & Proceed", disabled=save_disabled, use_container_width=True):
-        st.session_state.api_key = api_key_to_save if st.session_state.api_key_type == "Personal Key" else ""
-        st.session_state.llm_settings = {"provider": provider, "model": selected_model}
-        st.session_state.llm_ready = True 
-        
-        # Auto-flow: If data is not yet loaded, guide user to Data Hub
-        if st.session_state.trades_df is None:
-            st.session_state.page_transition = "Data Hub"
-            st.toast("LLM configured! Next: Load your data.", icon="🤖")
-        else:
-            st.toast("Settings saved successfully.", icon="✅")
-        st.rerun()
     
     st.divider()
     st.subheader("Agentic Autonomy Policy")
@@ -502,6 +490,21 @@ if page == "Settings":
         "kill_switch": kill_switch,
         "human_in_loop": st.checkbox("Always require human approval before execution", value=False)
     }
+
+    st.divider()
+    if st.button("Save & Launch Agentic Analysis", disabled=save_disabled, use_container_width=True):
+        st.session_state.api_key = api_key_to_save if st.session_state.api_key_type == "Personal Key" else ""
+        st.session_state.llm_settings = {"provider": provider, "model": selected_model}
+        st.session_state.llm_ready = True 
+        
+        # Auto-flow: If data is loaded, go straight to processing
+        if st.session_state.trades_df is not None:
+            st.session_state.app_state = "PROCESSING"
+            st.toast("Forensic engines online. Launching analysis...", icon="🤖")
+        else:
+            st.session_state.page_transition = "Data Hub"
+            st.toast("Settings saved! Please load data to begin.", icon="📥")
+        st.rerun()
 
 elif page == "Command Center":
     st.markdown('<h1 class="neon-violet">🛡️ Command Center</h1>', unsafe_allow_html=True)
