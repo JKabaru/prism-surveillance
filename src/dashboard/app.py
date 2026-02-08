@@ -159,6 +159,18 @@ if 'partners_df' not in st.session_state:
     st.session_state.clients_df = None
     st.session_state.trades_df = None
     st.session_state.col_mapping = {"Partners": {}, "Sub-Affiliates": {}, "Clients": {}, "Trades": {}}
+    
+# Initialize LLM Secrets (Cloud Compatibility)
+if 'api_key' not in st.session_state:
+    # Check Streamlit Secrets first (Secure storage on Cloud)
+    if "OPENROUTER_API_KEY" in st.secrets:
+        st.session_state.api_key = st.secrets["OPENROUTER_API_KEY"]
+        st.session_state.llm_verified = True
+        st.session_state.llm_ready = True
+    else:
+        st.session_state.api_key = ""
+        st.session_state.llm_verified = False
+        st.session_state.llm_ready = False
 
 def load_data_state(p, s, c, t):
     st.session_state.partners_df = p
@@ -420,17 +432,20 @@ if page == "Settings":
     
     selected_model = col_l2.selectbox("Model selection", model_ids, index=0 if model_ids else None)
     
-    api_key = st.text_input("API Key", type="password", value=st.session_state.get('api_key', ""))
+    api_key_placeholder = "••••••••••••••••" if st.session_state.get('api_key') else "Enter API Key"
+    api_key = st.text_input("API Key", type="password", value=st.session_state.get('api_key', ""), placeholder=api_key_placeholder)
     
     # Connection Lock
     if 'llm_verified' not in st.session_state: st.session_state.llm_verified = False
 
-    if st.button("Test Connection"):
+    col_btn1, col_btn2 = st.columns([1, 2])
+    if col_btn1.button("Test Connection"):
         temp_client = PRISMLLMClient(provider, api_key)
         with st.spinner("Verifying credentials..."):
             if temp_client.test_connection():
                 st.success(f"Connected to {provider} successfully!")
                 st.session_state.llm_verified = True
+                st.session_state.api_key = api_key
             else:
                 st.error(f"Failed to connect to {provider}. Please check your API key.")
                 st.session_state.llm_verified = False
