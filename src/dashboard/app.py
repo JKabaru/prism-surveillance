@@ -160,14 +160,15 @@ if 'partners_df' not in st.session_state:
     st.session_state.trades_df = None
     st.session_state.col_mapping = {"Partners": {}, "Sub-Affiliates": {}, "Clients": {}, "Trades": {}}
     
-# Initialize LLM Secrets (Cloud Compatibility)
-if 'api_key' not in st.session_state:
-    # Check Streamlit Secrets first (Secure storage on Cloud)
+# Initialize LLM Secrets (Hybrid Support)
+if 'api_key_type' not in st.session_state:
     if "OPENROUTER_API_KEY" in st.secrets:
+        st.session_state.api_key_type = "System Default"
         st.session_state.api_key = st.secrets["OPENROUTER_API_KEY"]
         st.session_state.llm_verified = True
         st.session_state.llm_ready = True
     else:
+        st.session_state.api_key_type = "Personal Key"
         st.session_state.api_key = ""
         st.session_state.llm_verified = False
         st.session_state.llm_ready = False
@@ -422,37 +423,49 @@ if page == "Settings":
     st.title("⚙️ AI & Agentic Settings")
     st.subheader("LLM Provider Configuration")
     
-    col_l1, col_l2 = st.columns(2)
-    provider = col_l1.selectbox("Provider", ["OpenRouter", "DeepSeek", "OpenAI", "Gemini", "Claude"], index=0)
+    # Key Mode Selection
+    system_key_available = "OPENROUTER_API_KEY" in st.secrets
+    key_mode_options = ["System Default", "Personal Key"] if system_key_available else ["Personal Key"]
     
-    # Dynamic Model Fetching
-    client = PRISMLLMClient(provider, st.session_state.get('api_key'))
-    models = client.get_models()
-    model_ids = [m['id'] for m in models]
+    key_mode = col_l1.radio("Key Source", key_mode_options, 
+                            index=0 if st.session_state.api_key_type == "System Default" else 1 if len(key_mode_options) > 1 else 0,
+                            horizontal=True)
     
-    selected_model = col_l2.selectbox("Model selection", model_ids, index=0 if model_ids else None)
-    
-    api_key_placeholder = "••••••••••••••••" if st.session_state.get('api_key') else "Enter API Key"
-    api_key = st.text_input("API Key", type="password", value=st.session_state.get('api_key', ""), placeholder=api_key_placeholder)
-    
-    # Connection Lock
-    if 'llm_verified' not in st.session_state: st.session_state.llm_verified = False
+    if key_mode == "System Default":
+        st.session_state.api_key_type = "System Default"
+        st.session_state.api_key = st.secrets["OPENROUTER_API_KEY"]
+        st.info("✅ Using pre-configured System Key. You can proceed without manual entry.")
+        st.session_state.llm_verified = True
+    else:
+        st.session_state.api_key_type = "Personal Key"
+        api_key_placeholder = "••••••••••••••••" if st.session_state.get('api_key') and st.session_state.api_key_type == "Personal Key" else "Enter Personal API Key"
+        current_val = st.session_state.get('api_key', "") if st.session_state.api_key_type == "Personal Key" else ""
+        
+        api_key = st.text_input("Personal API Key", type="password", value=current_val, placeholder=api_key_placeholder)
+        
+        # Connection Lock
+        if 'llm_verified' not in st.session_state: st.session_state.llm_verified = False
 
-    col_btn1, col_btn2 = st.columns([1, 2])
-    if col_btn1.button("Test Connection"):
-        temp_client = PRISMLLMClient(provider, api_key)
-        with st.spinner("Verifying credentials..."):
-            if temp_client.test_connection():
-                st.success(f"Connected to {provider} successfully!")
-                st.session_state.llm_verified = True
-                st.session_state.api_key = api_key
-            else:
-                st.error(f"Failed to connect to {provider}. Please check your API key.")
-                st.session_state.llm_verified = False
+        col_btn1, col_btn2 = st.columns([1, 2])
+        if col_btn1.button("Test Personal Connection"):
+            temp_client = PRISMLLMClient(provider, api_key)
+            with st.spinner("Verifying credentials..."):
+                if temp_client.test_connection():
+                    st.success(f"Connected to {provider} successfully!")
+                    st.session_state.llm_verified = True
+                    st.session_state.api_key = api_key
+                else:
+                    st.error(f"Failed to connect to {provider}. Please check your API key.")
+                    st.session_state.llm_verified = False
+        
+        save_val = api_key if key_mode == "Personal Key" else st.secrets["OPENROUTER_API_KEY"]
+    
+    # Final validation for save
+    active_key = st.session_state.api_key if key_mode == "System Default" else api_key
 
     save_disabled = not st.session_state.llm_verified
     if st.button("Save & Proceed", disabled=save_disabled, use_container_width=True):
-        st.session_state.api_key = api_key
+        st.session_state.api_key = active_key
         st.session_state.llm_settings = {"provider": provider, "model": selected_model}
         st.session_state.llm_ready = True # For easier checking
         
