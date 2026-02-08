@@ -24,12 +24,12 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for dark mode and styling
+# Custom CSS for high-fidelity glassmorphism and premium branding
 st.markdown("""
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
-    /* Global Styles */
+    /* Global Redesign Tokens */
     :root {
         --primary: #137fec;
         --background-dark: #050505;
@@ -40,91 +40,91 @@ st.markdown("""
         --prism-violet: #8b5cf6;
         --card-dark: #111111;
         --border-glass: rgba(255, 255, 255, 0.08);
+        --glow-cyan: 0 0 15px rgba(0, 242, 255, 0.3);
+        --glow-violet: 0 0 15px rgba(139, 92, 246, 0.3);
     }
 
     .stApp {
         background-color: var(--background-dark);
-        color: #slate-300;
+        background-image: 
+            radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+            radial-gradient(circle at 80% 80%, rgba(0, 242, 255, 0.05) 0%, transparent 40%);
+        color: #e2e8f0;
         font-family: 'Inter', sans-serif;
     }
 
-    /* Glassmorphism Panel */
+    /* Premium Glassmorphism Panel */
     .glass-panel {
-        background: rgba(13, 13, 13, 0.6);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        background: rgba(13, 13, 13, 0.7);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
         border: 1px solid var(--border-glass);
-        border-radius: 16px;
+        border-radius: 20px;
         padding: 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .glass-panel:hover {
+        border-color: rgba(255, 255, 255, 0.15);
     }
 
-    /* Neon Accents */
-    .neon-cyan { text-shadow: 0 0 8px rgba(0, 242, 255, 0.4); color: var(--prism-cyan); }
-    .neon-violet { text-shadow: 0 0 8px rgba(139, 92, 246, 0.4); color: var(--prism-violet); }
-    .neon-magenta { text-shadow: 0 0 8px rgba(255, 0, 255, 0.4); color: var(--prism-magenta); }
+    /* Neon & Glow Effects */
+    .neon-cyan { text-shadow: var(--glow-cyan); color: var(--prism-cyan); }
+    .neon-violet { text-shadow: var(--glow-violet); color: var(--prism-violet); }
+    .neon-magenta { text-shadow: 0 0 10px rgba(255, 0, 255, 0.4); color: var(--prism-magenta); }
 
-    /* Metric Styling Overwrite */
+    /* Redesigned Metrics */
     [data-testid="stMetricValue"] {
         font-family: 'Inter', sans-serif;
-        font-size: 1.8rem !important;
-        font-weight: 700 !important;
-        color: white !important;
-    }
-    [data-testid="stMetricDelta"] {
-        font-weight: 600 !important;
+        font-size: 2.2rem !important;
+        font-weight: 800 !important;
+        background: linear-gradient(to bottom, #fff, #94a3b8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
     div[data-testid="stMetric"] {
-        background: var(--surface-dark);
+        background: rgba(255, 255, 255, 0.02);
         border: 1px solid var(--border-glass);
-        border-radius: 12px;
-        padding: 20px !important;
-    }
-
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background-color: var(--surface-dark);
-        border-right: 1px solid var(--border-glass);
-    }
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-        color: #94a3b8;
-    }
-
-    /* Fraud Card */
-    .fraud-card {
-        background: var(--card-dark);
-        padding: 24px;
         border-radius: 16px;
-        border-left: 4px solid var(--prism-magenta);
+        padding: 24px !important;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Premium Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #080808;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Fraud Investigation Cards */
+    .fraud-card {
+        background: rgba(17, 17, 17, 0.8);
+        padding: 28px;
+        border-radius: 20px;
+        border: 1px solid var(--border-glass);
+        border-left: 5px solid var(--prism-magenta);
         margin-bottom: 24px;
-        transition: transform 0.2s ease, background 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .fraud-card:hover {
-        background: var(--surface-lighter);
-        transform: translateY(-2px);
+        background: rgba(21, 21, 21, 0.9);
+        transform: scale(1.01);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
     }
 
-    /* Buttons */
+    /* Custom Modern Buttons */
     .stButton>button {
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.2s ease;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid var(--border-glass) !important;
+        border-radius: 12px !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 10px 24px !important;
     }
-
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: var(--background-dark);
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #333;
-        border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #444;
+    .stButton>button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        border-color: var(--prism-cyan) !important;
+        box-shadow: var(--glow-cyan);
     }
 </style>
 """, unsafe_allow_html=True)

@@ -44,9 +44,24 @@ class PRISMReporter:
             <script src="https://cdn.tailwindcss.com"></script>
             <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
             <style>
-                body {{ font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; }}
-                .glass-card {{ background: rgba(13, 13, 13, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; }}
-                .neon-magenta {{ text-shadow: 0 0 8px rgba(255, 0, 255, 0.4); color: #ff00ff; }}
+                body {{ 
+                    font-family: 'Inter', sans-serif; 
+                    background-color: #050505; 
+                    background-image: radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.05), transparent);
+                    color: #e2e8f0; 
+                    margin: 0;
+                    padding: 40px;
+                }}
+                .glass-card {{ 
+                    background: rgba(13, 13, 13, 0.7); 
+                    backdrop-filter: blur(25px); 
+                    border: 1px solid rgba(255,255,255,0.08); 
+                    border-radius: 20px; 
+                    padding: 32px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+                }}
+                .neon-magenta {{ text-shadow: 0 0 10px rgba(255, 0, 255, 0.4); color: #ff00ff; }}
+                .neon-cyan {{ text-shadow: 0 0 10px rgba(0, 242, 255, 0.4); color: #00f2ff; }}
             </style>
         </head>
         <body class="p-8 md:p-16">

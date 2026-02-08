@@ -32,9 +32,9 @@ This document contains all the necessary information for the hackathon submissio
 
 ## 💻 App Hosting & Code Repository
 
-- **Public GitHub Repository:** [Link to your repo here]
-- **Demo Application Platform:** Streamlit Cloud (Recommended)
-- **Application URL:** [Link to your hosted app here]
+- **Public GitHub Repository:** [https://github.com/JKabaru/prism-surveillance.git](https://github.com/JKabaru/prism-surveillance.git)
+- **Demo Application Platform:** Streamlit Community Cloud
+- **Application URL:** [https://prism-surveillance.streamlit.app/](https://prism-surveillance.streamlit.app/) (Projected URL)
 
 ---
 
