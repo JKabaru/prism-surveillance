@@ -15,6 +15,7 @@ from src.engine.synthesizer import PRISMEvidenceSynthesizer
 from src.engine.behavior_engine import PRISMBehaviorEngine
 from src.dashboard.reporter import PRISMReporter
 from src.engine.regime_monitor import PRISMRegimeMonitor
+from src.engine.llm_client import PRISMLLMClient
 
 st.set_page_config(
     page_title="PRISM | AI-Powered Fraud Intelligence",
@@ -130,7 +131,38 @@ st.markdown("""
 
 from src.data.loader import PRISMDataLoader
 
-# Initialize Engines (passed session state data if available)
+# --- Secure Helper Functions ---
+def get_active_api_key():
+    """Returns the API key based on current mode, ensuring secrets aren't exposed in session_state."""
+    if st.session_state.get('api_key_type') == "System Default":
+        return st.secrets.get("OPENROUTER_API_KEY", "")
+    return st.session_state.get('api_key', "")
+
+# --- Initialize Session States (BEFORE Engines) ---
+if 'app_state' not in st.session_state:
+    st.session_state.app_state = "SETUP"
+
+if 'partners_df' not in st.session_state:
+    st.session_state.partners_df = None
+    st.session_state.subs_df = None
+    st.session_state.clients_df = None
+    st.session_state.trades_df = None
+    st.session_state.col_mapping = {"Partners": {}, "Sub-Affiliates": {}, "Clients": {}, "Trades": {}}
+    
+if 'api_key_type' not in st.session_state:
+    if "OPENROUTER_API_KEY" in st.secrets:
+        st.session_state.api_key_type = "System Default"
+        st.session_state.llm_verified = True
+        st.session_state.llm_ready = True
+    else:
+        st.session_state.api_key_type = "Personal Key"
+        st.session_state.llm_verified = False
+        st.session_state.llm_ready = False
+
+if 'api_key' not in st.session_state:
+    st.session_state.api_key = ""
+
+# --- Initialize Engines ---
 if 'partners_df' in st.session_state and st.session_state.partners_df is not None:
     engine = PRISMCorrelationEngine(time_window_seconds=1.0)
     mapper = PRISMNetworkMapper(st.session_state.clients_df, st.session_state.subs_df, st.session_state.partners_df)
@@ -151,52 +183,19 @@ else:
     loader = PRISMDataLoader()
     client = PRISMLLMClient('OpenRouter', get_active_api_key())
 
-
-if 'app_state' not in st.session_state:
-    st.session_state.app_state = "SETUP"
-
-# Initialize Session States
-if 'partners_df' not in st.session_state:
-    st.session_state.partners_df = None
-    st.session_state.subs_df = None
-    st.session_state.clients_df = None
-    st.session_state.trades_df = None
-    st.session_state.col_mapping = {"Partners": {}, "Sub-Affiliates": {}, "Clients": {}, "Trades": {}}
-    
-# Initialize LLM Secrets (Hybrid Support - Secure Masking)
-if 'api_key_type' not in st.session_state:
-    if "OPENROUTER_API_KEY" in st.secrets:
-        st.session_state.api_key_type = "System Default"
-        st.session_state.llm_verified = True
-        st.session_state.llm_ready = True
-    else:
-        st.session_state.api_key_type = "Personal Key"
-        st.session_state.llm_verified = False
-        st.session_state.llm_ready = False
-
-if 'api_key' not in st.session_state:
-    st.session_state.api_key = ""
-
-def get_active_api_key():
-    """Returns the API key based on current mode, ensuring secrets aren't exposed in session_state."""
-    if st.session_state.get('api_key_type') == "System Default":
-        return st.secrets.get("OPENROUTER_API_KEY", "")
-    return st.session_state.get('api_key', "")
-
 def load_data_state(p, s, c, t):
     st.session_state.partners_df = p
     st.session_state.subs_df = s
     st.session_state.clients_df = c
     st.session_state.trades_df = t
     # Update Mapper attributes correctly
-    mapper.partners_df = p
-    mapper.subs_df = s
-    mapper.clients_df = c
+    if 'mapper' in globals():
+        mapper.partners_df = p
+        mapper.subs_df = s
+        mapper.clients_df = c
     # Trigger auto-focus on Overview
     st.session_state.active_intake_tab = "📊 Data Overview"
     st.toast("🚀 Data initialized! Visualizing distribution...", icon="✅")
-
-from src.engine.llm_client import PRISMLLMClient
 
 # Sidebar Header Branding
 st.sidebar.markdown("""
