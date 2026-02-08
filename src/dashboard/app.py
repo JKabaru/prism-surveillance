@@ -183,6 +183,83 @@ else:
     loader = PRISMDataLoader()
     client = PRISMLLMClient('OpenRouter', get_active_api_key())
 
+# --- Priority Rendering: Glass-Box Reasoning (Instant Transition) ---
+if st.session_state.get('app_state') == "PROCESSING":
+    st.markdown('<h1 class="neon-cyan">🤖 Glass-Box Reasoning</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #64748b; margin-top: -15px; margin-bottom: 25px;">Complete transparency into the AI\'s data traversal and policy application.</p>', unsafe_allow_html=True)
+    
+    col_v1, col_v2 = st.columns([2, 1])
+    
+    with col_v1:
+        st.subheader("Live Agent Feed")
+        log_container = st.empty()
+        
+    with col_v2:
+        st.subheader("Detected Entities")
+        findings_container = st.container()
+
+    # Shared logs
+    if 'agent_logs' not in st.session_state: st.session_state.agent_logs = []
+    
+    def add_log(msg, type="info"):
+        emoji = "ℹ️" if type == "info" else "🔍" if type == "scan" else "✅" if type == "success" else "⚠️"
+        st.session_state.agent_logs.append(f"{emoji} {msg}")
+        # Display last 15 logs with terminal styling
+        log_html = f"<div style='background: #111; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; height: 350px; overflow-y: auto;'>"
+        log_html += "<br>".join(st.session_state.agent_logs[-15:])
+        log_html += "</div>"
+        log_container.markdown(log_html, unsafe_allow_html=True)
+
+    # Actual Execution (Optimized: No artificial delays)
+    add_log("Initializing PRISM Agentic Engine...", "info")
+    
+    # Emergency Interjection Check
+    if st.session_state.get('agent_settings', {}).get('kill_switch'):
+        add_log("Emergency Kill Switch active. Aborting pipeline.", "warning")
+        st.error("Global Kill Switch is ON. Agentic actions are suspended.")
+        if st.button("Reset Kill Switch"):
+            st.session_state.agent_settings['kill_switch'] = False
+            st.rerun()
+        st.stop()
+
+    # 1. Detection
+    add_log("Scanning trade logs for temporal synchronization...", "scan")
+    clusters = engine.detect_mirror_trades(st.session_state.trades_df)
+    rings = engine.aggregate_rings(clusters)
+    add_log(f"Detected {len(rings)} potential fraud clusters.", "success")
+    
+    # 2. Synthesis & Glass-Box view for each (Fully Autonomous)
+    for ring in rings:
+        with findings_container:
+            st.markdown(f"**Ring {ring['id']}** identified.")
+        
+        add_log(f"Analyzing Ring {ring['id']} attribution and behavior...", "scan")
+        attr = mapper.get_attribution(ring['client_ids'])
+        evidence = synthesizer.synthesize_ring(ring, attr)
+        
+        # Show reasoning logs
+        for r_log in evidence['agent_decision']['reasoning_logs']:
+            add_log(f"  > {r_log}", "info")
+        
+        # Autonomous execution feedback
+        action = evidence['agent_decision']['selected_action']
+        add_log(f"Policy authorized. Executing {action} autonomously...", "success")
+        
+        with findings_container:
+            st.success(f"Action Executed: {action}")
+            if st.button(f"Override {ring['id']}", key=f"ovr_{ring['id']}"):
+                st.session_state.selected_ring = ring
+                st.session_state.app_state = "INSIGHTS"
+                st.rerun()
+
+    add_log("Phase 2 Analysis: Behavioral anomalies...", "scan")
+    add_log("Full Autonomous Cycle Complete. Audit trail generated.", "success")
+    
+    if st.button("Review Autonomous Decisions", use_container_width=True):
+        st.session_state.app_state = "INSIGHTS"
+        st.rerun()
+    st.stop()
+
 def load_data_state(p, s, c, t):
     st.session_state.partners_df = p
     st.session_state.subs_df = s
@@ -311,88 +388,6 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Page Logic ---
-
-if st.session_state.app_state == "PROCESSING":
-    st.markdown('<h1 class="neon-cyan">🤖 Glass-Box Reasoning</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="color: #64748b; margin-top: -15px; margin-bottom: 25px;">Complete transparency into the AI\'s data traversal and policy application.</p>', unsafe_allow_html=True)
-    
-    col_v1, col_v2 = st.columns([2, 1])
-    
-    with col_v1:
-        st.subheader("Live Agent Feed")
-        log_container = st.empty()
-        
-    with col_v2:
-        st.subheader("Detected Entities")
-        findings_container = st.container()
-
-    # Shared logs
-    if 'agent_logs' not in st.session_state: st.session_state.agent_logs = []
-    
-    def add_log(msg, type="info"):
-        emoji = "ℹ️" if type == "info" else "🔍" if type == "scan" else "✅" if type == "success" else "⚠️"
-        st.session_state.agent_logs.append(f"{emoji} {msg}")
-        # Display last 10 logs with terminal styling
-        log_html = f"<div style='background: #111; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; height: 300px; overflow-y: auto;'>"
-        log_html += "<br>".join(st.session_state.agent_logs[-15:])
-        log_html += "</div>"
-        log_container.markdown(log_html, unsafe_allow_html=True)
-
-    # Actual Execution with real-time feedback
-    import time
-    add_log("Initializing PRISM Agentic Engine...", "info")
-    time.sleep(1)
-    
-    # Emergency Interjection Check
-    if st.session_state.get('agent_settings', {}).get('kill_switch'):
-        add_log("Emergency Kill Switch active. Aborting pipeline.", "warning")
-        st.error("Global Kill Switch is ON. Agentic actions are suspended.")
-        if st.button("Reset Kill Switch"):
-            st.session_state.agent_settings['kill_switch'] = False
-            st.rerun()
-        st.stop()
-
-    # 1. Detection
-    add_log("Scanning trade logs for temporal synchronization...", "scan")
-    clusters = engine.detect_mirror_trades(st.session_state.trades_df)
-    rings = engine.aggregate_rings(clusters)
-    time.sleep(1)
-    add_log(f"Detected {len(rings)} potential fraud clusters.", "success")
-    
-    # 2. Synthesis & Glass-Box view for each (Fully Autonomous)
-    for ring in rings:
-        with findings_container:
-            st.markdown(f"**Ring {ring['id']}** identified.")
-        
-        add_log(f"Analyzing Ring {ring['id']} attribution and behavior...", "scan")
-        attr = mapper.get_attribution(ring['client_ids'])
-        evidence = synthesizer.synthesize_ring(ring, attr)
-        
-        # Show reasoning logs
-        for r_log in evidence['agent_decision']['reasoning_logs']:
-            add_log(f"  > {r_log}", "info")
-            time.sleep(0.3)
-        
-        # Autonomous execution feedback
-        action = evidence['agent_decision']['selected_action']
-        add_log(f"Policy authorized. Executing {action} autonomously...", "success")
-        
-        with findings_container:
-            st.success(f"Action Executed: {action}")
-            # Non-blocking interjection link
-            if st.button(f"Override {ring['id']}", key=f"ovr_{ring['id']}"):
-                st.session_state.selected_ring = ring
-                st.session_state.app_state = "INSIGHTS"
-                st.rerun()
-
-    add_log("Phase 2 Analysis: Behavioral anomalies...", "scan")
-    time.sleep(1)
-    add_log("Full Autonomous Cycle Complete. Audit trail generated.", "success")
-    
-    if st.button("Review Autonomous Decisions"):
-        st.session_state.app_state = "INSIGHTS"
-        st.rerun()
-    st.stop()
 
 # Robust page mapping for all states
 if "Data Hub" in page or "Data Management" in page: page = "Data Intake"
