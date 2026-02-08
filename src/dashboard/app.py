@@ -255,10 +255,11 @@ if st.session_state.get('app_state') == "PROCESSING":
     add_log("Phase 2 Analysis: Behavioral anomalies...", "scan")
     add_log("Full Autonomous Cycle Complete. Audit trail generated.", "success")
     
-    if st.button("Review Autonomous Decisions", use_container_width=True):
-        st.session_state.app_state = "INSIGHTS"
-        st.rerun()
-    st.stop()
+    # Automatic Transition (Full Autonomy)
+    import time
+    time.sleep(1.5) # Brief pause so user can see completion
+    st.session_state.app_state = "INSIGHTS"
+    st.rerun()
 
 def load_data_state(p, s, c, t):
     st.session_state.partners_df = p
