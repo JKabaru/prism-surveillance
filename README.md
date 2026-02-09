@@ -52,5 +52,4 @@
 ## 🛡️ Security & Design
 PRISM is built on an **Evidence-First** methodology, ensuring all AI-driven decisions are fully explainable and auditable. It serves as a decision-support system, keeping humans-in-the-loop for high-stakes compliance actions.
 
----
-*Created for the [Current Project/Hackathon Name]*
+
